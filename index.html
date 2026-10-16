@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#171329">
+  <meta name="description" content="یک پیام کوچک برای لبخند تو.">
+  <title>پیامی برای تو ✦</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{color-scheme:dark;--night:#100e1b;--plum:#24203c;--rose:#e7a9c4;--gold:#e8ce9b;--cream:#fbf5ef;--muted:#aaa0b2}
+    *{box-sizing:border-box}
+    html{min-height:100%;background:var(--night)}
+    body{margin:0;min-height:100svh;display:grid;place-items:center;overflow-x:hidden;padding:28px 18px;font-family:Vazirmatn,sans-serif;color:var(--cream);background:radial-gradient(ellipse at 50% 0%,#33274c 0%,#1a172c 43%,#100e1b 80%);-webkit-font-smoothing:antialiased}
+    .sky,.heart-field{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+    .star{position:absolute;width:2px;height:2px;border-radius:50%;background:#fff6e9;opacity:.55;animation:twinkle 4s ease-in-out infinite}
+    .heart{position:absolute;bottom:-35px;opacity:0;filter:drop-shadow(0 0 9px #e7a9c455);animation:rise linear forwards}
+    .card{position:relative;isolation:isolate;width:min(100%,540px);padding:clamp(32px,7vw,60px) clamp(22px,6vw,50px);text-align:center;border:1px solid #e8ce9b30;border-radius:4px;background:linear-gradient(145deg,#ffffff09,#ffffff02);box-shadow:0 35px 100px #0005, inset 0 1px #fff1;backdrop-filter:blur(12px);animation:appear .9s cubic-bezier(.2,.8,.2,1) both}
+    .card:before,.card:after{content:"";position:absolute;width:22px;height:22px;border-color:#e8ce9b80;pointer-events:none}
+    .card:before{top:10px;right:10px;border-top:1px solid;border-right:1px solid}.card:after{bottom:10px;left:10px;border-bottom:1px solid;border-left:1px solid}
+    .eyebrow{display:flex;align-items:center;justify-content:center;gap:10px;color:#c9b9d0;font-size:10px;letter-spacing:.15em;margin-bottom:25px}
+    .eyebrow:before,.eyebrow:after{content:"";height:1px;width:24px;background:#e8ce9b66}
+    .envelope{font-size:46px;display:inline-block;margin-bottom:23px;filter:drop-shadow(0 8px 25px #e7a9c444);animation:float 4.5s ease-in-out infinite}
+    h1{font-size:clamp(23px,5.5vw,32px);font-weight:500;line-height:2;margin:0;color:var(--cream);letter-spacing:-.03em}
+    .gold-word{color:var(--gold);font-weight:700;text-shadow:0 0 25px #e8ce9b26}
+    .divider{width:70px;height:1px;margin:26px auto;background:linear-gradient(90deg,transparent,var(--rose),var(--gold),transparent)}
+    .hint{font-size:12px;color:var(--muted);margin:0;transition:opacity .3s}
+    .smile{margin-top:25px;min-height:44px;padding:10px 18px;border:1px solid #e8ce9b55;background:#e8ce9b0c;color:var(--gold);font:inherit;font-size:12px;cursor:pointer;transition:background .3s,border-color .3s,transform .3s}
+    .smile:hover{background:#e8ce9b18;border-color:var(--gold);transform:translateY(-2px)}
+    .smile:focus-visible{outline:2px solid var(--gold);outline-offset:4px}
+    .signature{margin-top:26px;font:9px "DM Mono",monospace;letter-spacing:.16em;color:#766d85;direction:ltr}
+    @keyframes twinkle{0%,100%{opacity:.18;transform:scale(.8)}50%{opacity:.85;transform:scale(1.4)}}
+    @keyframes rise{0%{transform:translateY(0) translateX(0) rotate(0);opacity:0}12%{opacity:.8}85%{opacity:.45}100%{transform:translateY(-110svh) translateX(var(--drift)) rotate(25deg);opacity:0}}
+    @keyframes float{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-8px) rotate(2deg)}}
+    @keyframes appear{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+    @media(max-width:380px){.card{padding-inline:18px}.envelope{font-size:40px}h1{font-size:22px}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+  </style>
+</head>
+<body>
+  <div class="sky" id="stars" aria-hidden="true"></div>
+  <div class="heart-field" id="hearts" aria-hidden="true"></div>
+  <main class="card">
+    <div class="eyebrow">A LITTLE NOTE, JUST FOR YOU</div>
+    <div class="envelope" aria-hidden="true">💌</div>
+    <h1>حالا که تا اینجا اومدی،<br><span class="gold-word">لبخند</span> فراموش نشه 😄😉❤️</h1>
+    <div class="divider"></div>
+    <p class="hint" id="hint">برای تو، با یک لبخند</p>
+    <button class="smile" id="smileButton" type="button">یک لبخند بفرست ✦</button>
+    <div class="signature">MADE WITH CARE · 2026</div>
+  </main>
+  <script>
+    (() => {
+      const stars = document.getElementById('stars');
+      const hearts = document.getElementById('hearts');
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      for (let i=0;i<54;i++) {
+        const star=document.createElement('i'); star.className='star';
+        star.style.left=(Math.random()*100)+'%'; star.style.top=(Math.random()*100)+'%';
+        star.style.animationDelay=(Math.random()*4)+'s'; stars.appendChild(star);
+      }
+      const symbols=['♡','♥','✦'];
+      function spawnHeart(){
+        if(reduced) return;
+        const item=document.createElement('span'); item.className='heart';
+        item.textContent=symbols[Math.floor(Math.random()*symbols.length)];
+        item.style.left=(Math.random()*100)+'%';
+        item.style.fontSize=(12+Math.random()*13)+'px';
+        item.style.setProperty('--drift',(Math.random()*70-35)+'px');
+        item.style.animationDuration=(7+Math.random()*5)+'s';
+        hearts.appendChild(item);
+        item.addEventListener('animationend',()=>item.remove(),{once:true});
+      }
+      if(!reduced){for(let i=0;i<5;i++)setTimeout(spawnHeart,i*280);setInterval(spawnHeart,900);}
+      document.getElementById('smileButton').addEventListener('click',()=>{
+        document.getElementById('hint').textContent='همین لبخند کوچیک، کافیه ✨';
+        for(let i=0;i<8;i++)setTimeout(spawnHeart,i*80);
+      });
+    })();
+  </script>
+</body>
+</html>
